@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <style>
+        /* Setting the Root Font Size for Screen Sizes */
+
+:root {
+  font-size: 25px;
+}
+
+@media only screen and (max-width: 767px) {
+  :root {
+    font-size: 10px;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  :root {
+    font-size: 20px;
+  }
+}
+
+@media only screen and (min-width: 2560px) {
+  :root {
+    font-size: 30px;
+  }
+}
+
+/* App Styling */
+
+* {
+  outline: none;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+  font-size: 2rem;
+  background: #ffd89b; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to bottom right,
+    #0d1f2d,
+    #19547b,
+    #ffd89b
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to bottom right,
+    #0d1f2d,
+    #19547b,
+    #ffd89b
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  color: #fffcf2;
+}
+
+button {
+  padding: 0.4rem;
+  background-color: rgba(0, 0, 0, 0);
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 300;
+  border: none;
+  border-radius: 5px;
+  color: inherit;
+  cursor: pointer;
+}
+
+button:hover {
+  background: hsla(46, 100%, 97%, 0.15);
+  text-shadow: 0px 0px 10px hsla(46, 100%, 97%, 0.25);
+}
+
+button:disabled {
+  background-color: rgba(0, 0, 0, 0);
+  text-shadow: none;
+  cursor: default;
+}
+
+.container {
+  height: 100vh;
+  background-color: hsla(0, 0%, 25%, 0.2);
+}
+
+.interface {
+  width: 100%;
+}
+
+.timer-display {
+  width: 95%;
+  margin-bottom: 1.5rem;
+  font-family: "Source Code Pro", monospace;
+  font-size: 8rem;
+  font-weight: 200;
+  text-align: center;
+  text-shadow: 0px 0px 2px #f5f5ef;
+}
+
+.settings {
+  min-width: 60%;
+  padding: 0.5rem;
+  border-radius: 5px;
+  background-color: hsla(46, 100%, 97%, 0.3);
+  box-shadow: 0 0 0.5rem hsla(206, 55%, 11%, 0.1);
+}
+
+.setting-options {
+  padding: 0 1rem;
+}
+
+.setting-options > * {
+  margin: 0.2rem;
+}
+
+.toggle-timer {
+  width: 6rem;
+}
+
+.quad {
+  padding: 0;
+  margin: 0;
+  width: 2.5rem;
+}
+
+.toggle-notification {
+  width: 3rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fa {
+  position: absolute;
+}
+
+.fa-ban {
+  color: hsla(0, 100%, 20%, 0.25);
+  text-shadow: none;
+  transition: color 0.3s;
+}
+
+.off {
+  color: rgba(0, 0, 0, 0);
+}
+
+.progress-bar,
+.progress {
+  margin-top: 0.4rem;
+  width: 100%;
+  height: 0.4rem;
+  border-radius: 3px;
+}
+
+.progress-bar {
+  background-color: hsla(37, 100%, 95%, 0.2);
+}
+
+.progress {
+  background: hsla(37, 100%, 75%, 0.7);
+  transition: width 1s linear;
+}
+
+#no {
+  font-size: 3rem;
+}
+
+#notif {
+  font-size: 1.5rem;
+}
+
+/* App-Layout */
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.interface {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.timer-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.setting-options {
+  display: flex;
+  justify-content: center;
+}
+
+.setting-options > * {
+  flex-grow: 1;
+}
+
+    </style>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <div class="container">
+        
+            <div class="interface">
+        
+                <div class="timer-display">
+                    25:00
+                </div>
+        
+                <div class="settings">
+        
+                    <form class="setting-options">
+        
+                        <button type="button" class="toggle-timer" name="toggle-timer">Start</button>
+                        <button type="button" class="reset-timer" name="reset-timer">Reset</button>
+                        <button type="button" class="set-timer quad" id="inc" name="inc">&plus;</button>
+                        <button type="button" class="set-timer quad" id="dec" name="dec">&minus;</button>
+                        <button type="button" class="toggle-notification quad" name="toggle-notification">
+                            <i class="fa fa-ban off" id="no"></i>
+                            <i class="fa fa-bell-o" id="notif"></i>
+                        </button>
+        
+                    </form>
+        
+                    <div class="progress-bar">
+                        <div id="progress" class="progress progress-bg-transition"></div>
+                    </div>
+        
+                </div>
+        
+            </div>
+        
+        </div>
+        <audio id="doneSound"
+            src="https://raw.githubusercontent.com/Miffili/codepen-resources/master/pomodoro-clock/Correct-answer.mp3">
+        <script src="" async defer></script>
+    </body>
+</html>
+<script>
+    const timerDisplay = document.querySelector('.timer-display');
+        const toggleButton = document.querySelector('.toggle-timer');
+        const resetButton = document.querySelector('.reset-timer');
+        const setTimerButtons = document.querySelectorAll('.set-timer');
+        const notifButton = document.querySelector('.toggle-notification');
+        const banIcon = document.querySelector('.fa-ban');
+        const progressDisplay = document.querySelector('.progress');
+
+        // audio
+        const sound = document.querySelector('#doneSound');
+        sound.volume = 0.05;
+
+        // times in seconds
+        const maxTime = 3300;
+        const minTime = 300;
+
+        const defaultTime = 1500;
+        let pomodoroTime = 15000;
+
+        let countdown;
+        let timerStatus = false;
+        let notifStatus = true;
+
+        function displayTime(seconds) {
+            const hour = Math.floor(seconds / 3600); //4
+            const modahour = seconds % 3600; // 600
+            const munutes = Math.floor(modahour / 60);
+            const modeseconds = modahour % 60;
+            const displayhour = `${hour < 10 ? '0' : ''}${hour}`;
+            const displaymin = `${munutes < 10 ? '0' : ''}${munutes}`;
+            const disseconds = `${modeseconds < 10? '0' : ''}${modeseconds}`;
+            const dispaly = `${displayhour}:${displaymin}:${disseconds}`;
+            console.log(dispaly);
+            timerDisplay.textContent = dispaly;
+            // const minutes = Math.floor(seconds / 60);
+            // const restSeconds = seconds % 60;
+            // console.log(minutes,restSeconds,"rest")
+            // const displayMins = `${minutes < 10 ? '0' : ''}${minutes}`;
+            // const displaySecs = `${restSeconds < 10 ? '0' : ''}${restSeconds}`;
+            // const display = `${displayMins}:${displaySecs}`;
+            // console.log(displayMins,displaySecs,display)
+            // timerDisplay.textContent = display;
+        }
+
+
+        function runTimer(seconds) {
+            clearInterval(countdown);
+            // updateProgress(pomodoroTime - 1);
+
+            // calculate timeleft
+            const now = Date.now();
+            console.log(now,"now");
+            const timesUp = now + seconds * 1000;
+
+            console.log(timesUp,"timeUp");
+
+            // start interval
+            countdown = setInterval(() => {
+
+                const secondsLeft = Math.round((timesUp - Date.now()) / 1000);
+                if (secondsLeft < 1) {
+                    if (notifStatus) { sound.play(); }
+                    toggleButton.textContent = 'End';
+                    toggleButton.setAttribute('disabled', true);
+                    timerStatus = false;
+                }
+
+                // if time is up
+                if (secondsLeft < 0) {
+                    clearInterval(countdown);
+                    return;
+                }
+
+                // display timer
+                displayTime(secondsLeft);
+                updateProgress(secondsLeft - 1);
+
+            }, 1000);
+        }
+
+
+        function togglePomodoro() {
+            // stops timer
+            if (timerStatus) {
+                toggleButton.textContent = 'Start';
+
+                // stop running timer
+                clearInterval(countdown);
+
+                // starts timer
+            } else if (!timerStatus) {
+
+                // update UI
+                displayTime(pomodoroTime);
+                setTimerButtons.forEach((el) => el.setAttribute('disabled', true));
+                toggleButton.textContent = 'Stop';
+
+                // get set time & convert to seconds
+                const timerSeconds = pomodoroTime;
+
+                // run Timer
+                runTimer(timerSeconds);
+            }
+
+            timerStatus = !timerStatus;
+        }
+
+
+        function resetTimer() {
+            timerStatus = false;
+            setTimerButtons.forEach((el) => el.removeAttribute('disabled'));
+            toggleButton.removeAttribute('disabled');
+            toggleButton.textContent = 'Start';
+            clearInterval(countdown);
+            displayTime(pomodoroTime);
+            updateProgress(pomodoroTime);
+        }
+
+
+        function updateTime(e) {
+            console.log(e);
+            const type = e.target.id;
+
+            if (type === 'inc' && pomodoroTime < maxTime) {
+                pomodoroTime += 300;
+            } else if (type === 'dec' && pomodoroTime > minTime) {
+                pomodoroTime -= 300;
+            }
+
+            displayTime(pomodoroTime);
+        }
+
+
+        function updateProgress(timeLeft) {
+            const progress = (timeLeft / pomodoroTime) * 100;
+            progressDisplay.style.width = `${progress}%`;
+        }
+
+
+        function toggleNotification() {
+            banIcon.classList.toggle('off');
+            notifStatus = !notifStatus;
+        }
+
+
+        toggleButton.addEventListener('click', togglePomodoro);
+        resetButton.addEventListener('click', resetTimer);
+        resetButton.addEventListener('dblclick', () => {
+            pomodoroTime = defaultTime;
+            resetTimer();
+        });
+        setTimerButtons.forEach((el) => el.addEventListener('click', updateTime));
+        notifButton.addEventListener('click', toggleNotification);
+
+</script>
+></html>
